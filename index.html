@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Waterfowl Donation — Microplastics Study</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --bg:           #EEF3F5;
+    --surface:      #FFFFFF;
+    --accent:       #1B3A5E;
+    --accent-mid:   #24527D;
+    --accent-light: #D4E4F3;
+    --text:         #18232F;
+    --muted:        #5C6E80;
+    --border:       #C5D0DA;
+    --label:        #1E3F5A;
+    --input-bg:     #FFFFFF;
+    --row-bg:       #F5F8FB;
+    --check-hover:  #DDE9F4;
+    --success-bg:   #E8F2F8;
+    --info-bg:      #EBF4FF;
+    --info-border:  #4A7CAF;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:           #0C141F;
+      --surface:      #112029;
+      --accent:       #5AAAD0;
+      --accent-mid:   #4696BB;
+      --accent-light: #152838;
+      --text:         #DDEEF5;
+      --muted:        #7AAAB8;
+      --border:       #264050;
+      --label:        #9FCFE0;
+      --input-bg:     #0E1E2A;
+      --row-bg:       #0F1E27;
+      --check-hover:  #1A3545;
+      --success-bg:   #152D38;
+      --info-bg:      #152333;
+      --info-border:  #4A7CAF;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:           #0C141F;
+    --surface:      #112029;
+    --accent:       #5AAAD0;
+    --accent-mid:   #4696BB;
+    --accent-light: #152838;
+    --text:         #DDEEF5;
+    --muted:        #7AAAB8;
+    --border:       #264050;
+    --label:        #9FCFE0;
+    --input-bg:     #0E1E2A;
+    --row-bg:       #0F1E27;
+    --check-hover:  #1A3545;
+    --success-bg:   #152D38;
+    --info-bg:      #152333;
+    --info-border:  #4A7CAF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding-inline: 16px;
+    padding-block: 36px;
+    padding-top: max(36px, env(safe-area-inset-top, 0px));
+    padding-bottom: max(36px, env(safe-area-inset-bottom, 0px));
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 680px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 36px 40px 32px;
+    color: #fff;
+  }
+
+  .eyebrow {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  .header p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.88;
+    line-height: 1.65;
+    max-width: 56ch;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  @media (max-width: 520px) {
+    .card        { padding: 20px 18px; }
+    .header      { padding: 24px 20px 22px; }
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--label);
+    margin: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Fields ── */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 480px) {
+    .row2 { grid-template-columns: 1fr; }
+  }
+
+  label.field-label {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--label);
+    letter-spacing: 0.015em;
+  }
+
+  label.field-label .req {
+    color: var(--accent-mid);
+    margin-left: 2px;
+  }
+
+  label.field-label .opt {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    padding: 10px 12px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+
+  input::placeholder,
+  textarea::placeholder { color: var(--muted); opacity: 0.7; }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--accent-mid);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+
+  input.error,
+  select.error,
+  textarea.error {
+    border-color: #B94040;
+    box-shadow: 0 0 0 3px rgba(185,64,64,0.12);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.55;
+  }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%231B3A5E' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+  }
+
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* ── Callout ── */
+  .callout {
+    font-size: 13px;
+    color: var(--muted);
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    line-height: 1.5;
+  }
+  .callout a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ── Info box (instructions, not a question) ── */
+  .info-box {
+    background: var(--info-bg);
+    border: 1.5px solid var(--info-border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .info-box strong {
+    color: var(--label);
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .info-box ol, .info-box ul {
+    margin: 6px 0 0 0;
+    padding-left: 20px;
+  }
+  .info-box li { margin-bottom: 4px; }
+
+  /* ── Checkbox list ── */
+  .check-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    background: var(--row-bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 11px 14px;
+    cursor: pointer;
+    transition: border-color 0.12s, background 0.12s;
+    user-select: none;
+  }
+
+  .check-item:hover {
+    border-color: var(--accent-mid);
+    background: var(--check-hover);
+  }
+
+  .check-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .check-item .ci-text { flex: 1; }
+
+  .ci-main {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.35;
+    display: block;
+  }
+
+  .ci-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.4;
+    display: block;
+    font-weight: 400;
+  }
+
+  /* ── Species grid ── */
+  .species-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .species-grid { grid-template-columns: 1fr; }
+  }
+
+  .species-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--row-bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 12px 14px;
+  }
+
+  .species-name {
+    min-width: 0;
+  }
+
+  .species-common {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+    line-height: 1.3;
+  }
+
+  .species-sci {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-style: italic;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .species-count {
+    width: 100%;
+    text-align: left;
+    font-size: 15px;
+    padding: 7px 10px;
+  }
+
+  /* ── Radio contact pref ── */
+  .radio-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--row-bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: border-color 0.12s, background 0.12s;
+    user-select: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .radio-item:hover {
+    border-color: var(--accent-mid);
+    background: var(--check-hover);
+  }
+
+  .radio-item input[type="radio"] {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* ── Submit ── */
+  .submit-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 15px 24px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: background 0.15s;
+  }
+
+  button[type="submit"]:hover  { background: var(--accent-mid); }
+  button[type="submit"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── Error banner ── */
+  .error-banner {
+    background: #FEF0F0;
+    border: 1px solid #E8AAAA;
+    border-radius: 7px;
+    color: #7A1F1F;
+    font-size: 13px;
+    padding: 10px 14px;
+    display: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .error-banner {
+      background: #2A1515;
+      border-color: #5A2525;
+      color: #F0AAAA;
+    }
+  }
+  :root[data-theme="dark"] .error-banner {
+    background: #2A1515;
+    border-color: #5A2525;
+    color: #F0AAAA;
+  }
+  .error-banner.visible { display: block; }
+
+  .check-group.err .check-item,
+  .radio-group.err .radio-item {
+    border-color: #B94040;
+  }
+
+  /* ── Success screen ── */
+  #success-screen {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 56px 40px;
+    text-align: center;
+    display: none;
+  }
+  #success-screen.visible { display: block; }
+
+  .success-duck {
+    font-size: 52px;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  #success-screen h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    color: var(--accent);
+    margin: 0 0 12px;
+  }
+
+  #success-screen p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 42ch;
+    margin-inline: auto;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="header">
+    <div class="eyebrow">University of Rhode Island · Dept. of Natural Resources Science</div>
+    <h1>Waterfowl Donation Sign-Up<br>Microplastics Study</h1>
+    <p>Thank you for supporting our research! Fill out this form to let us know what birds you have and schedule a pickup. If you have any questions, email <strong>katie.miranda@uri.edu</strong> or call <strong>(985) 231‑8337</strong>.</p>
+
+  </header>
+
+  <div id="error-banner" class="error-banner" role="alert">
+    Please fill in all required fields before submitting.
+  </div>
+
+  <form id="form" novalidate>
+
+    <!-- 1 · Contact -->
+    <div class="card">
+      <h2 class="card-title">Your Contact Information</h2>
+
+      <div class="row2">
+        <div class="field">
+          <label class="field-label" for="fname">First Name <span class="req">*</span></label>
+          <input type="text" id="fname" name="first_name" required autocomplete="given-name" placeholder="John">
+        </div>
+        <div class="field">
+          <label class="field-label" for="lname">Last Name <span class="req">*</span></label>
+          <input type="text" id="lname" name="last_name" required autocomplete="family-name" placeholder="Doe">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">Email Address <span class="req">*</span></label>
+        <input type="email" id="email" name="email" required autocomplete="email" placeholder="my_email@email.com">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email_confirm">Confirm Email Address <span class="req">*</span></label>
+        <input type="email" id="email_confirm" name="email_confirm" required autocomplete="off" placeholder="my_email@email.com">
+        <span class="hint" id="email-match-hint" style="display:none; color:#B94040;">Email addresses do not match.</span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="phone">Cell Phone Number <span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="(401) 000-0000">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Preferred Contact Method <span class="req">*</span></label>
+        <div class="radio-group" id="contact-pref-group">
+          <label class="radio-item">
+            <input type="radio" name="contact_pref" value="Email" required>
+            📧 Email
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="contact_pref" value="Phone/Text">
+            📱 Phone / Text
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="contact_pref" value="Either">
+            Either is fine
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 · Bird counts -->
+    <div class="card">
+      <h2 class="card-title">Birds Available to Donate</h2>
+      <div class="info-box" style="display:flex; align-items:center; gap:10px; padding: 12px 16px;">
+        <span style="font-size:22px; flex-shrink:0;">⚠️</span>
+        <span style="font-size:13.5px;"><strong style="display:inline; font-size:17px; text-transform:none; letter-spacing:normal; color:var(--label);">Reminder: All birds must be harvested in Rhode Island.</strong> Unfortunately we cannot accept birds harvested outside of RI.<br>
+<a href="mailto:katie.miranda@uri.edu" style="color:var(--accent);">Contact us</a> if you have questions.</span>
+      </div>
+      <p class="callout">Enter the approximate number of birds you have for each species. This helps us know when we've met our quota for each species.</p>
+
+      <div class="species-grid" id="species-group">
+
+        <div class="species-row">
+          <div class="species-name">
+            <span class="species-common">Bufflehead</span>
+            <span class="species-sci">Bucephala albeola</span>
+          </div>
+          <input type="number" class="species-count" name="count_bufflehead" id="cnt_bufflehead" min="0" placeholder="0">
+        </div>
+
+        <div class="species-row">
+          <div class="species-name">
+            <span class="species-common">Common Goldeneye</span>
+            <span class="species-sci">Bucephala clangula</span>
+          </div>
+          <input type="number" class="species-count" name="count_goldeneye" id="cnt_goldeneye" min="0" placeholder="0">
+        </div>
+
+        <div class="species-row">
+          <div class="species-name">
+            <span class="species-common">Common Eider</span>
+            <span class="species-sci">Somateria mollissima</span>
+          </div>
+          <input type="number" class="species-count" name="count_eider" id="cnt_eider" min="0" placeholder="0">
+        </div>
+
+        <div class="species-row">
+          <div class="species-name">
+            <span class="species-common">Black Scoter</span>
+            <span class="species-sci">Melanitta americana</span>
+          </div>
+          <input type="number" class="species-count" name="count_scoter" id="cnt_scoter" min="0" placeholder="0">
+        </div>
+
+        <div class="species-row">
+          <div class="species-name">
+            <span class="species-common">Mallard</span>
+            <span class="species-sci">Anas platyrhynchos</span>
+          </div>
+          <input type="number" class="species-count" name="count_mallard" id="cnt_mallard" min="0" placeholder="0">
+        </div>
+
+        <div class="species-row">
+          <div class="species-name">
+            <span class="species-common">Red-breasted Merganser</span>
+            <span class="species-sci">Mergus serrator</span>
+          </div>
+          <input type="number" class="species-count" name="count_merganser" id="cnt_merganser" min="0" placeholder="0">
+        </div>
+
+        <div class="species-row">
+          <div class="species-name">
+            <span class="species-common">American Black Duck</span>
+            <span class="species-sci">Anas rubripes</span>
+          </div>
+          <input type="number" class="species-count" name="count_blackduck" id="cnt_blackduck" min="0" placeholder="0">
+        </div>
+
+        <div class="species-row" style="border-style: dashed;">
+          <div class="species-name">
+            <span class="species-common">Species Unknown</span>
+            <span class="species-sci">Not sure? We can identify them at pickup.</span>
+          </div>
+          <input type="number" class="species-count" name="count_unknown" id="cnt_unknown" min="0" placeholder="0">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3 · Bird storage instructions (informational only) -->
+    <div class="card">
+      <h2 class="card-title">How to Store Your Birds</h2>
+
+      <div class="info-box">
+        <strong>📦 Before Pickup — Please Do the Following</strong>
+        <p style="margin: 0 0 10px;">Place each bird in its own ziploc/trash/paper bag or other container and freeze as soon as possible after harvest. Carcasses can be whole or breasted-out. Multiple birds from a single hunt can go in a single bag.</p>
+        <p style="margin: 0 0 6px;"><strong style="display:inline; font-size:inherit; text-transform:none; letter-spacing:normal; color:inherit;">Label each bag with the following information:</strong></p>
+        <ol>
+          <li>Your name</li>
+          <li>Your phone number</li>
+          <li>Species</li>
+          <li>Harvest date</li>
+          <li>Harvest time <em>(approximate)</em></li>
+          <li>Harvest location <em>(nearest town and distance from it, OR GPS coordinates)</em></li>
+        </ol>
+        <p style="margin: 10px 0 0; font-size: 12.5px; color: var(--muted);">Please keep birds frozen until pickup. Questions? Email <a href="mailto:katie.miranda@uri.edu" style="color:var(--accent);">katie.miranda@uri.edu</a>.</p>
+      </div>
+    </div>
+
+    <!-- 4 · Pickup -->
+    <div class="card">
+      <h2 class="card-title">Pickup Logistics</h2>
+
+      <div class="info-box" style="padding: 14px 18px;">
+        <strong>📬 How Pickup Works</strong>
+        We will be doing porch pickups on the dates listed below. <strong style="display:inline; font-size:inherit; text-transform:none; letter-spacing:normal; color:var(--label);">Please place your birds outside before 8:00 AM on your selected pickup date.</strong> You don't have to be present!
+      </div>
+
+      <div class="field">
+        <label class="field-label">Preferred Pickup Date(s) <span class="req">*</span> <span style="font-size:12px; font-weight:400; color:var(--muted);">— select all that work</span></label>
+        <div class="check-group" id="pickup-group">
+          <label class="check-item">
+            <input type="checkbox" name="pickup_date" value="Sun Oct 18">
+            <span class="ci-text">
+              <span class="ci-main">Sunday, October 18</span>
+            </span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="pickup_date" value="Mon Nov 30">
+            <span class="ci-text">
+              <span class="ci-main">Monday, November 30</span>
+            </span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="pickup_date" value="Wed Dec 16">
+            <span class="ci-text">
+              <span class="ci-main">Wednesday, December 16</span>
+            </span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="pickup_date" value="Mon Jan 25">
+            <span class="ci-text">
+              <span class="ci-main">Monday, January 25</span>
+            </span>
+          </label>
+          <label class="check-item" style="border-style: dashed; opacity: 0.85;">
+            <input type="checkbox" name="pickup_date" value="Alternative date needed">
+            <span class="ci-text">
+              <span class="ci-main">None of these — alternative date needed</span>
+              <span class="ci-sub">We will reach out to arrange a time that works for you.</span>
+            </span>
+          </label>
+        </div>
+        <div class="callout" style="margin-top: 4px;">
+          🧊 <strong>Freezer full?</strong> Contact us for an extra pickup! Email <a href="mailto:katie.miranda@uri.edu">katie.miranda@uri.edu</a> or call <a href="tel:9852318337">(985) 231‑8337</a>.
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="pickup_address">Pickup Address <span class="req">*</span></label>
+        <input type="text" id="pickup_address" name="pickup_address" required placeholder="123 Main St, Providence, RI 02903">
+        <span class="hint">Can be your home, office, or any other convenient location.</span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="pickup_location">Pickup Location <span class="req">*</span></label>
+        <select id="pickup_location" name="pickup_location" required>
+          <option value="" disabled selected>Select a location…</option>
+          <option>Front door/porch</option>
+          <option>Back door/porch</option>
+          <option>Side door/porch</option>
+          <option>Driveway</option>
+          <option>Garage</option>
+          <option>Shed</option>
+          <option>Gate</option>
+          <option>Other (describe below)</option>
+        </select>
+        <span class="hint">Where should we look for the birds when we arrive?</span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="pickup_notes">Additional Pickup Instructions <span class="opt">(optional)</span></label>
+        <textarea id="pickup_notes" name="pickup_notes" placeholder="e.g., gate code, dogs on property, birds are in a chest freezer in the shed/garage…"></textarea>
+        <span class="hint">Anything that would help us find or access the birds — gate codes, pets, where exactly to look.</span>
+      </div>
+
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit">Submit Donation Form</button>
+      <p class="footer-note">We'll reach out via your preferred contact method to confirm pickup details.<br>Thank you for supporting this research!</p>
+    </div>
+
+  </form>
+
+  <!-- Success -->
+  <div id="success-screen" role="status" aria-live="polite">
+    <div class="success-duck">🦆</div>
+    <h2>Thank you so much!</h2>
+    <p>We received your submission and will be in touch to confirm your pickup. Your donation makes a real difference for this research.</p>
+  </div>
+
+</div>
+
+<script>
+  // ── CONFIGURATION ──────────────────────────────────────────────
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0awrPGVaNaoj2NIsjmooXdHaO5FtZZOvHeTjYJC4Qw-h2S9rAEFT5h00In3SOh6Jl/exec';
+  // ───────────────────────────────────────────────────────────────
+
+  const form   = document.getElementById('form');
+  const banner = document.getElementById('error-banner');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    let valid = true;
+    const btn = this.querySelector('button[type="submit"]');
+
+    // Clear previous errors
+    this.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+    this.querySelectorAll('.check-group.err, .radio-group.err').forEach(el => el.classList.remove('err'));
+    banner.classList.remove('visible');
+    banner.textContent = 'Please fill in all required fields before submitting.';
+
+    // Required text/email/tel inputs
+    this.querySelectorAll('[required]').forEach(el => {
+      if (el.type === 'radio') return; // handled below
+      if (!el.value.trim()) {
+        el.classList.add('error');
+        valid = false;
+      }
+    });
+
+    // Email format
+    const emailEl = document.getElementById('email');
+    if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+      emailEl.classList.add('error');
+      valid = false;
+    }
+
+    // Email match
+    const emailConfirmEl = document.getElementById('email_confirm');
+    const emailMatchHint = document.getElementById('email-match-hint');
+    if (emailEl.value && emailConfirmEl.value && emailEl.value !== emailConfirmEl.value) {
+      emailConfirmEl.classList.add('error');
+      emailMatchHint.style.display = 'block';
+      valid = false;
+    } else {
+      emailMatchHint.style.display = 'none';
+    }
+
+    // Contact preference radio
+    const contactChecked = this.querySelectorAll('input[name="contact_pref"]:checked').length;
+    if (contactChecked === 0) {
+      document.getElementById('contact-pref-group').classList.add('err');
+      valid = false;
+    }
+
+    // At least one bird
+    const speciesCounts = [...this.querySelectorAll('.species-count')];
+    const totalBirds = speciesCounts.reduce((sum, el) => sum + (parseInt(el.value) || 0), 0);
+    if (totalBirds === 0) {
+      speciesCounts.forEach(el => el.classList.add('error'));
+      banner.textContent = 'Please enter a count for at least one species and fill in all required fields.';
+      valid = false;
+    }
+
+    // At least one pickup date
+    const dateChecked = this.querySelectorAll('input[name="pickup_date"]:checked').length;
+    if (dateChecked === 0) {
+      document.getElementById('pickup-group').classList.add('err');
+      valid = false;
+    }
+
+    if (!valid) {
+      banner.classList.add('visible');
+      banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+
+    // Collect species counts
+    const speciesMap = {};
+    speciesCounts.forEach(el => {
+      if (el.value && parseInt(el.value) > 0) {
+        speciesMap[el.name] = parseInt(el.value);
+      }
+    });
+
+    const data = {
+      first_name:     document.getElementById('fname').value.trim(),
+      last_name:      document.getElementById('lname').value.trim(),
+      email:          document.getElementById('email').value.trim(),
+      phone:          document.getElementById('phone').value.trim(),
+      contact_pref:   (this.querySelector('input[name="contact_pref"]:checked') || {}).value || '',
+      species_counts: speciesMap,
+      total_birds:    totalBirds,
+      pickup_dates:   [...this.querySelectorAll('input[name="pickup_date"]:checked')].map(cb => cb.value).join(', '),
+      pickup_address:  document.getElementById('pickup_address').value.trim(),
+      pickup_location: document.getElementById('pickup_location').value,
+      pickup_notes:    document.getElementById('pickup_notes').value.trim()
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method:  'POST',
+        mode:    'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body:    JSON.stringify(data)
+      });
+    } catch (err) {
+      if (SCRIPT_URL === 'YOUR_SCRIPT_URL_HERE') {
+        btn.disabled    = false;
+        btn.textContent = 'Submit Donation Form';
+        banner.textContent = '⚠️ Form is not yet connected to a spreadsheet. Set SCRIPT_URL in the code to enable submissions.';
+        banner.classList.add('visible');
+        return;
+      }
+    }
+
+    form.style.display = 'none';
+    banner.style.display = 'none';
+    const success = document.getElementById('success-screen');
+    success.classList.add('visible');
+    success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Format phone number as (xxx) xxx-xxxx
+  const phoneEl = document.getElementById('phone');
+  phoneEl.addEventListener('input', function(e) {
+    let digits = this.value.replace(/\D/g, '').slice(0, 10);
+    let formatted = '';
+    if (digits.length > 0) formatted = '(' + digits.slice(0, 3);
+    if (digits.length >= 4) formatted += ') ' + digits.slice(3, 6);
+    if (digits.length >= 7) formatted += '-' + digits.slice(6, 10);
+    this.value = formatted;
+  });
+
+  // Prevent scroll wheel from changing number inputs
+  document.querySelectorAll('input[type="number"]').forEach(el => {
+    el.addEventListener('wheel', function(e) {
+      e.preventDefault();
+    }, { passive: false });
+  });
+
+  // Live error clearing
+  form.addEventListener('input', function(e) {
+    if (e.target.classList.contains('error')) e.target.classList.remove('error');
+    // Live email match check
+    if (e.target.id === 'email' || e.target.id === 'email_confirm') {
+      const email = document.getElementById('email').value;
+      const confirm = document.getElementById('email_confirm').value;
+      const hint = document.getElementById('email-match-hint');
+      if (confirm && email !== confirm) {
+        hint.style.display = 'block';
+      } else {
+        hint.style.display = 'none';
+        document.getElementById('email_confirm').classList.remove('error');
+      }
+    }
+  });
+
+  form.addEventListener('change', function(e) {
+    if (e.target.name === 'contact_pref') {
+      document.getElementById('contact-pref-group').classList.remove('err');
+      banner.classList.remove('visible');
+    }
+    if (e.target.name === 'pickup_date') {
+      document.getElementById('pickup-group').classList.remove('err');
+      banner.classList.remove('visible');
+    }
+    if (e.target.classList.contains('species-count')) {
+      document.querySelectorAll('.species-count').forEach(el => el.classList.remove('error'));
+    }
+  });
+</script>
+</body>
+</html>
